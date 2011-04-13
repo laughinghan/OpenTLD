@@ -24,7 +24,7 @@ end
 
 csize = 6*sigma;
 
-shift = (csize - 1)/2;
+shift = round((csize - 1)/2); %to ensure integer values for matrix indices
 
 h = fspecial('gaussian',csize,sigma);
 
