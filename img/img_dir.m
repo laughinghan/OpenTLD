@@ -24,7 +24,17 @@ ext = {'*.jpeg','*.jpg','*.png','*.pgm'};
 
 images = [];
 for i = 1:length(ext)
-    images = [images dir([path ext{i}])];
+% There's a matrix dimension mismatch here matlab ignores, but octave doesn't.
+% Fix after pascalbertrand. Just transposing (i.e. [images dir([path ext{i}])'])
+% would have been easier, but segfaults octave occasionally. maybe a bug?
+	if exist('OCTAVE_VERSION')
+		dir_list = dir([path ext{i}]);
+		if length(dir_list) > 0
+			images = [images dir_list];
+		end
+	else
+    	images = [images dir([path ext{i}])];
+	end
 end
 
 % images are returned with absolute path
