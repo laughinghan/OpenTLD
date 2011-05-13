@@ -36,13 +36,11 @@ if ispc
     mex -O bb_overlap.cpp
     mex -O warp.cpp
     mex -O distance.cpp
-end
-
-if ismac
+elseif ismac
     disp('Mac');
     
-    include = ' -I/opt/local/include/opencv/ -I/opt/local/include/'; 
-    libpath = '/opt/local/lib/'; 
+    include = ' -I/usr/local/include/opencv/ -I/usr/local/include/'; 
+    libpath = '/usr/local/lib/'; 
     
     files = dir([libpath 'libopencv*.dylib']);
     
@@ -58,10 +56,7 @@ if ismac
     mex -O bb_overlap.cpp
     mex -O warp.cpp
     mex -O distance.cpp
-    
-end
-
-if isunix
+else
     disp('Unix');
     
     include = ' -I/usr/local/include/opencv/ -I/usr/local/include/';
@@ -87,4 +82,3 @@ end
 
 cd ..
 disp('Compilation finished.');
-
