@@ -23,7 +23,7 @@
 
 %source.vid = videoinput('winvideo', 1);
 %source.vid = videoinput('winvideo', 1,'RGB24_320x240');
-if exist('videoinput')
+if exist('videoinput','file')
     source.vid = videoinput('winvideo', 1,'YUY2_320x240');
 
     set(source.vid,'ReturnedColorSpace','grayscale');

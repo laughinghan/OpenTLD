@@ -19,7 +19,7 @@
 function img = img_get(source,I)
 
 if source.camera
-    if (exist('videoinput')) % using matlab with Image Acquisition package
+    if (exist('videoinput','file')) % using matlab with Image Acquisition package
         img = img_alloc(getsnapshot(source.vid));
     else % We don't have the Image Acquisition package, using stream_server
 	if exist('OCTAVE_VERSION','builtin') % from octave
