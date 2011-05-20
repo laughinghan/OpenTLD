@@ -84,12 +84,20 @@ pY = ones(1,size(pX,2));
 % disp(['# P patterns: ' num2str(size(pX,2))]);
 % disp(['# P patches : ' num2str(size(pEx,2))]);
 
+if opt.PRINT_DEBUG==1
+    fprintf('Original Bounding Box: (%f,%f) (%f,%f)\n',tld.source.bb(1),tld.source.bb(2),tld.source.bb(3),tld.source.bb(4));
+end
 % Correct initial bbox
 tld.bb(:,1) = bbP(1:4,:);
+if opt.PRINT_DEBUG==1
+    fprintf('New Bounding Box: (%f,%f) (%f,%f)\n',bbP(1),bbP(2),bbP(3),bbP(4));
+end
 
 % Variance threshold
 tld.var = var(pEx(:,1))/2;
-% disp(['Variance : ' num2str(tld.var)]);
+if opt.PRINT_DEBUG==1
+    fprintf('Variance : %s\n', num2str(tld.var));
+end
 
 % Generate Negative Examples
 [nX,nEx] = tldGenerateNegativeData(tld,overlap,tld.img{1});
@@ -133,8 +141,42 @@ tld.model.num_init = size(tld.pex,2);
 % Fern
 conf_fern = fern(3,nX2);
 tld.model.thr_fern = max(max(conf_fern)/tld.model.num_trees,tld.model.thr_fern);
+if opt.PRINT_DEBUG==1
+    fprintf('Fern Threshold: %f\n',tld.model.thr_fern);
+end
 
 % Nearest neighbor
 conf_nn = tldNN(nEx2,tld);
 tld.model.thr_nn = max(tld.model.thr_nn,max(conf_nn));
 tld.model.thr_nn_valid = max(tld.model.thr_nn_valid,tld.model.thr_nn);
+
+if opt.PRINT_DEBUG==1
+    fprintf('Nearest Neighbor Threshold: %f\n',tld.model.thr_nn);
+end
+
+% Save ground truth data
+if (opt.SAVEGROUNDTRUTH==1)
+    grid = tld.grid; %#ok<NASGU>
+    features = tld.features; %#ok<NASGU>
+    pex = tld.pex; %#ok<NASGU>
+    nex = tld.nex; %#ok<NASGU>
+
+    save([opt.output 'grid.txt'],'grid','-ascii')
+    save([opt.output 'feature.txt'],'features') %not possible to save as an ascii file
+
+    save([opt.output 'pex.txt'],'pex','-ascii')
+    save([opt.output 'nex.txt'],'nex','-ascii')
+
+    save([opt.output 'pX.txt'],'pX','-ascii')
+    save([opt.output 'nX1.txt'],'nX1','-ascii')
+    save([opt.output 'nX2.txt'],'nX2','-ascii')
+
+    save([opt.output 'pEx.txt'],'pEx','-ascii')
+    save([opt.output 'nEx1.txt'],'nEx1','-ascii')
+    save([opt.output 'nEx2.txt'],'nEx2','-ascii')
+
+    save([opt.output 'conf_fern.txt'],'conf_fern','-ascii')
+    save([opt.output 'conf_nn.txt'],'conf_nn','-ascii')
+    
+    fprintf('\nGround truth data saved!\n\n');
+end
