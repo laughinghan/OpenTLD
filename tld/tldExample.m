@@ -18,6 +18,7 @@
 function [bb,conf] = tldExample(opt)
 
 global tld; % holds results and temporal variables
+global finish; % to enable keypress capture under octave's stricter scope rules
 
 % INITIALIZATION ----------------------------------------------------------
 
@@ -25,7 +26,7 @@ opt.source = tldInitSource(opt.source); % select data source, camera/directory
 
 figure(2); set(2,'KeyPressFcn', @handleKey); % open figure for display of results
 finish = 0; 
-function handleKey(dummy1,dummy2), finish = 1; fprintf('Execution interrupted by keypress.\n'); end % by pressing any key, the process will exit
+function handleKey(dummy1,dummy2), global finish; finish = 1; fprintf('\nExecution interrupted by keypress!\n\n'); end % by pressing any key, the process will exit
 
 while 1
     source = tldInitFirstFrame(tld,opt.source,opt.model.min_win); % get initial bounding box, return 'empty' if bounding box is too small
