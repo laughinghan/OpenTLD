@@ -18,6 +18,10 @@
 function tldDemo(opt)
 
 global tld; % holds all tracking results
+if exist('OCTAVE_VERSION','builtin')
+	% Respect octave scoping rules
+	global quit_tld, select_source, opt, initialize;
+end
 
 select_source = 1;
 initialize    = 1;
@@ -125,6 +129,10 @@ while 1
 end % end while 1
 
     function handleKey(dummy10, evnt)
+		if exist('OCTAVE_VERSION','builtin')
+			% Respect octave scoping rules
+			global quit_tld, select_source, opt, initialize;
+		end
         switch evnt.Character
             case '1'
                 tld.control.maxbbox = 0.2;
