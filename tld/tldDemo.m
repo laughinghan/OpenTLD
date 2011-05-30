@@ -21,9 +21,10 @@ global tld; % holds all tracking results
 if exist('OCTAVE_VERSION','builtin')
 	% Respect octave scoping rules
 	% opt should be global, too - this is broken atm
-	global quit_tld select_source initialize;
+	global quit_tld select_source initialize optdummy;
 end
 
+optdummy = opt;
 select_source = 1;
 initialize    = 1;
 quit_tld      = 0;
@@ -32,7 +33,7 @@ while 1
     
     % select data source --------------------------------------------------
     if select_source
-        opt.source = tldInitSource(opt.source);
+        optdummy.source = tldInitSource(optdummy.source);
         select_source = 0;
         initialize    = 1;
         tld           = [];
@@ -47,14 +48,14 @@ while 1
     if initialize
         % get initial frame and initial bounding box
         while 1
-            source = tldInitFirstFrame(tld,opt.source,opt.model.min_win);
+            source = tldInitFirstFrame(tld,optdummy.source,optdummy.model.min_win);
             if ~isempty(source),
-                opt.source = source;
+                optdummy.source = source;
                 break;
             end
         end
         % train initial detector
-        tld = tldInit(opt,tld);
+        tld = tldInit(optdummy,tld);
         % display first frame
         tld = tldDisplay(0,tld);
         initialize = 0;
@@ -133,7 +134,7 @@ end % end while 1
 		if exist('OCTAVE_VERSION','builtin')
 			% Respect octave scoping rules
 			% opt should be global, too - this is broken atm
-			global quit_tld select_source initialize tld;
+			global quit_tld select_source initialize tld optdummy;
 		end
         switch evnt.Character
             case '1'
@@ -152,11 +153,11 @@ end % end while 1
                 quit_tld = 1;
             case 's'
                 select_source = 1;
-                opt.source.id = [];
+                optdummy.source.id = [];
             case 'i'
                 initialize = 1;
-                if opt.source.id>0
-                    opt.source.bb0{opt.source.id} = [];
+                if optdummy.source.id>0
+                    optdummy.source.bb0{optdummy.source.id} = [];
                 end
             case 'd'
                 tld.plot.dt =  1 - tld.plot.dt;
