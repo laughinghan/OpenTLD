@@ -20,7 +20,8 @@ function tldDemo(opt)
 global tld; % holds all tracking results
 if exist('OCTAVE_VERSION','builtin')
 	% Respect octave scoping rules
-	global quit_tld, select_source, opt, initialize;
+	% opt should be global, too - this is broken atm
+	global quit_tld select_source initialize;
 end
 
 select_source = 1;
@@ -131,7 +132,8 @@ end % end while 1
     function handleKey(dummy10, evnt)
 		if exist('OCTAVE_VERSION','builtin')
 			% Respect octave scoping rules
-			global quit_tld, select_source, opt, initialize;
+			% opt should be global, too - this is broken atm
+			global quit_tld select_source initialize tld;
 		end
         switch evnt.Character
             case '1'

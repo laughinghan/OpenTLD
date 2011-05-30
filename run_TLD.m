@@ -44,6 +44,7 @@ opt.control         = struct('maxbbox',maxbbox,'update_detector',update_detector
 % Run TLD -----------------------------------------------------------------
 %profile on;
 [bb,conf] = tldExample(opt);
+%[bb,conf] = tldDemo(opt); %Option to run tldDemo instead of tldExample
 %profile off;
 %profile viewer;
 
