@@ -22,25 +22,46 @@ clc; clear all; cd mex;
 % Check prefix and files lines if they correspond to your system.
 % (Un)comment as necessary.
 
+% Logic to distinguish between octave and Matlab on Windows
+% changes by https://github.com/a432511
+
 if ispc
     disp('PC');
-    include = ' -Ic:\OpenCV2.2\include\opencv\ -Ic:\OpenCV2.2\include\';
-    libpath = 'c:\OpenCV2.2\lib\';
-    files = dir([libpath '*.lib']);
-    
+	include = ' -IC:\OpenCV2.2\include\opencv\ -IC:\OpenCV2.2\include\';
+	libpath = 'C:\OpenCV2.2\lib\';
+	files = dir([libpath '*.lib']);
     lib = [];
-    for i = 1:length(files),
-        lib = [lib ' ' libpath files(i).name];
-    end
-    
-    eval(['mex lk.cpp -O' include lib]);
-    mex -O -c tld.cpp
-    mex -O fern.cpp tld.obj
-    mex -O linkagemex.cpp
-    mex -O bb_overlap.cpp
-    mex -O warp.cpp
-    mex -O distance.cpp
 
+	if exist('OCTAVE_VERSION','builtin')
+		disp('octave');
+		for i = 1:length(files),
+		    file = files(i).name;
+		    ind = index(file,'.');
+		    file = substr(file, 1, ind - 1);
+		    lib = [lib ' -l' file];
+		end
+		%disp(lib);
+		eval(['mex -v' include ' -L' libpath ' lk.cpp' lib]);
+		mex -c tld.cpp
+		mex fern.cpp tld.o
+		mex linkagemex.cpp
+		mex bb_overlap.cpp
+		mex warp.cpp
+		mex distance.cpp
+	else
+		disp('matlab');
+		for i = 1:length(files),
+		    lib = [lib ' ' libpath files(i).name];
+		end
+
+		eval(['mex lk.cpp -O' include lib]);
+		mex -O -c tld.cpp
+		mex -O fern.cpp tld.obj
+		mex -O linkagemex.cpp
+		mex -O bb_overlap.cpp
+		mex -O warp.cpp
+		mex -O distance.cpp
+	end
 elseif ismac
     disp('Mac');
 	% [bilderbuchi] Please test this again. Also, octave if possible
