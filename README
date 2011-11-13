@@ -13,7 +13,7 @@
 # This is working in Matlab WITHOUT Image Acquisition Toolbox
 # through stream_server.c using sockets and OpenCV.
 # You have to compile stream_server on your own for now, the command may look
-# similar to this: gcc stream_server.c -lcv -lhighgui -o stream_server
+# similar to this: gcc stream_server.c `pkg-config --cflags opencv` `pkg-config --libs opencv` -o stream_server
 #
 # Webcam in octave is near completion. Frames are grabbed properly from the
 # server but problems with mouse input arise when selectin object boudaries.
