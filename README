@@ -7,6 +7,7 @@
 # Tracking is  working in Octave now, with some changes w.r.t. Zdenek's branch
 # See https://github.com/bilderbuchi/OpenTLD/issues/2 for more information.
 #
+# (Note: You need the Octave sockets package.)
 #
 # Webcam support: 
 # This is working in Matlab WITHOUT Image Acquisition Toolbox

@@ -21,6 +21,8 @@
 % Try to run independently in Matlab (requires Image Acquisition toolbox)
 % if it does not work, modify the first two lines
 
+pkg load sockets
+
 if exist('videoinput','file')
     source.vid = videoinput('macvideo', 1);
     %source.vid = videoinput('macvideo', 1,'RGB24_320x240');
