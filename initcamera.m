@@ -44,15 +44,14 @@ else %videoinput is not a valid function, try stream_server
     else %we are running a Matlab without Image Acquisition package
         source.socket = tcpip('localhost', 5000);
         set(source.socket, 'InputBufferSize', 640*480);
-	fopen(source.socket);
-	connect_status = get(source.socket,'Status');
-	connect_status = strcmp(connect_status, 'closed');
+        fopen(source.socket);
+        connect_status = get(source.socket,'Status');
+        connect_status = strcmp(connect_status, 'closed');
     end
     % check connection status
     if connect_status == 0 %successful connection
     else %maybe stream_server is not running
         %TODO: report error
-	error('Error while connecting to stream server!');
-	
+        error('Error while connecting to stream server!');
     end
 end
